@@ -34,11 +34,32 @@ class Game:
             if self.snake.check_collision():
                 self.snake.reset()
                 self.food.place()
-                # self.time_step = SPEED
+                reward = -10  # q-learning withdraw for collision
             if self.snake.rect.center == self.food.rect.center:
                 self.food.place()
                 self.snake.grow()
-                # self.time_step -= 10
+                reward = 10  # q-learning bonus for eating
+
+    def get_state(self):  # q-learning method
+        direction = self.snake.direction
+
+        straight = direction
+        right = self.snake.turn_right(direction)
+        left = self.snake.turn_left(direction)
+
+        danger_straight = self.snake.danger_ahead(straight)
+        danger_right = self.snake.danger_ahead(right)
+        danger_left = self.snake.danger_ahead(left)
+
+        food_dir = self.snake.food_dir(self.food.rect.center)
+
+        return (
+            danger_straight,
+            danger_right,
+            danger_left,
+            direction,
+            food_dir,
+        )
 
     def draw(self):
         self.screen.fill("black")
