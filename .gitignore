@@ -1,0 +1,9 @@
+# Python
+__pycache__/
+*.pyc
+
+# Ruff
+.ruff_cache/
+
+# VS Code
+.vscode
